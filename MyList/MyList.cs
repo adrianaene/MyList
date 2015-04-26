@@ -26,9 +26,13 @@ namespace MyList
             if (this.count == size)
             {
                 this.size = this.size * 2;
-                MyList<T> newList = new MyList<T>(this.size);                
+                MyList<T> newList = new MyList<T>(this.size);
+
                 for (int i = 0; i < this.count; i++)
-                    newList[i] = this.items[i];                
+                {
+                    newList[i] = this.items[i];
+                }
+
                 newList[this.count] = item;
                 this.count++;
                 this.items = newList.items;
