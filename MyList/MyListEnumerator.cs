@@ -10,32 +10,35 @@ namespace MyList
     public class MyListEnumerator<T> : IEnumerator<T>
     {
         private MyList<T> items;
-        private int curIndex;
+        private int currentIndex;
         private T item;
 
 
         public MyListEnumerator(MyList<T> items)
         {
             this.items = items;
-            this.curIndex = -1;
+            this.currentIndex = -1;
             item = default(T);
-
         }
 
         public bool MoveNext()
         {
-            if (++curIndex >= items.Count)
+            currentIndex++;
+
+            if (currentIndex >= items.Count)
             {
                 return false;
             }
+
             else
             {
-                item = items[curIndex];
+                item = items[currentIndex];
             }
+
             return true;
         }
 
-        public void Reset() { curIndex = -1; }
+        public void Reset() { currentIndex = -1; }
 
         void IDisposable.Dispose() { }
 

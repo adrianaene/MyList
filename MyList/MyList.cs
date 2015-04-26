@@ -9,14 +9,7 @@ namespace MyList
     public class MyList<T> 
     {
         private int size, count;
-        private T[] items;
-
-        public MyList()
-        {
-            this.size = 20;
-            this.items = new T[20];
-            this.count = 0;
-        }
+        private T[] items;           
 
         public MyList(int size)
         {
@@ -25,10 +18,26 @@ namespace MyList
             this.count = 0;
         }
 
+        public MyList():this(20)
+        { }
+
         public void Add(T item)
         {
-            this.items[count] = item;
-            this.count++;
+            if (this.count == size)
+            {
+                this.size = this.size * 2;
+                MyList<T> newList = new MyList<T>(this.size);                
+                for (int i = 0; i < this.count; i++)
+                    newList[i] = this.items[i];                
+                newList[this.count] = item;
+                this.count++;
+                this.items = newList.items;
+            }
+            else
+            {
+                this.items[count] = item;
+                this.count++;
+            }
         }
 
         public int Count
@@ -40,23 +49,46 @@ namespace MyList
 
         }
 
+        public int Size
+        {
+            get
+            {
+                return this.size;
+            }
+
+        }
+
+        public bool CheckIndexIsInRange(int min, int max, int index)
+        {
+            if (index > min || index <= max)
+                return true;
+            else
+                return false;
+        }
+
         public T this[int index]
         {
             get
             {
-                if (index < 0 || index >= this.count)
+                if (!CheckIndexIsInRange(0, this.count, index))
+                {
                     throw new ArgumentOutOfRangeException();
+                }
                 else
+                {
                     return this.items[index];
+                }
             }
+
             set
             {
-                if (index < 0 || index > this.count + 1)
+                if (!CheckIndexIsInRange(0, this.count, index))
+                {
                     throw new ArgumentOutOfRangeException();
+                }
                 else
                 {
                     this.items[index] = value;
-                    this.count++;
                 }
             }
         }
@@ -70,19 +102,29 @@ namespace MyList
         public bool Contains(T item)
         {
             for (int i = 0; i < this.count; i++)
+            {
                 if (this.items[i].Equals(item))
+                {
                     return true;
+                }
+            }
+
             return false;
         }
 
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= this.count)
+            if (!CheckIndexIsInRange(0, this.count, index))
+            {
                 throw new ArgumentOutOfRangeException();
+            }
+
             else
             {
                 for (int i = index + 1; i < this.count; i++)
+                {
                     this.items[i - 1] = this.items[i];
+                }
 
                 this.items[this.count] = default(T);
                 this.count--;
@@ -98,8 +140,13 @@ namespace MyList
         {
             MyList<T> newList = new MyList<T>();
             for (int i = 0; i < this.count; i++)
+            {
                 if (match(this.items[i]))
+                {
                     newList.Add(this.items[i]);
+                }
+            }
+
             return newList;
         }
     }
