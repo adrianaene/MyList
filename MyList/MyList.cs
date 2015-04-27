@@ -130,7 +130,7 @@ namespace MyList
                     this.items[i - 1] = this.items[i];
                 }
 
-                this.items[this.count] = default(T);
+                this.items[this.count - 1] = default(T);
                 this.count--;
             }
         }
